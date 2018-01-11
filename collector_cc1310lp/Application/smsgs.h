@@ -190,6 +190,8 @@ The <b>Sensor Ramp Data Message</b> is defined as:
 #define SMSGS_SENSOR_LIGHT_LEN 2
 /*! Length of the humiditySensor portion of the sensor data message */
 #define SMSGS_SENSOR_HUMIDITY_LEN 4
+/*! Length of the bh1750Sensor portion of the sensor data message */
+#define SMSGS_SENSOR_BH1750_LEN 2
 /*! Length of the messageStatistics portion of the sensor data message */
 #define SMSGS_SENSOR_MSG_STATS_LEN 40
 /*! Length of the configSettings portion of the sensor data message */
@@ -245,6 +247,8 @@ typedef enum
     Smsgs_dataFields_msgStats = 0x0008,
     /*! Config Settings */
     Smsgs_dataFields_configSettings = 0x0010,
+    /*! bh1750 Sensor */
+    Smsgs_dataFields_bh1750Sensor = 0x0020,
 } Smsgs_dataFields_t;
 
 /*!
@@ -377,6 +381,14 @@ typedef struct _Smsgs_humiditysensorfield_t
     /*! Raw Humidity Sensor Data from the TI HCD1000 humidity sensor. */
     uint16_t humidity;
 } Smsgs_humiditySensorField_t;
+
+/*!
+ BH1750 Sensor Field
+ */
+typedef struct _Smsgs_bh1750sensorfield_t
+{
+    uint16_t light;
+} Smsgs_bh1750SensorField_t;
 
 /*!
  Message Statistics Field
@@ -512,6 +524,8 @@ typedef struct _Smsgs_sensormsg_t
      Smsgs_dataFields_configSettings is set in frameControl.
      */
     Smsgs_configSettingsField_t configSettings;
+
+    Smsgs_bh1750SensorField_t bh1750Sensor;
 } Smsgs_sensorMsg_t;
 
 /*!

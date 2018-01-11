@@ -51,8 +51,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
-#if defined(CC13XX_LAUNCHXL)
+
+#if defined (MY_CC13XX_LAUNCHXL)
+
+#include "My_LaunchPad/Board.h"
+#elif defined(CC13XX_LAUNCHXL)
 /** ============================================================================
  *  @file  board.h
  *
