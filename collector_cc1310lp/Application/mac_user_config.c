@@ -48,8 +48,9 @@
  * INCLUDES
  */
 
-
-#if defined(CC13XX_LAUNCHXL)
+#if defined (MY_CC13XX_LAUNCHXL)
+#include "My_LaunchPad/Board.h"
+#elif defined(CC13XX_LAUNCHXL)
 #include "CC13X0_LAUNCHXL/Board.h"
 #elif defined(CC26XX_LAUNCHXL)
 #include "CC2650_LAUNCHXL/Board.h"
@@ -85,7 +86,7 @@
  * GLOBAL VARIABLES
  */
 /* CC13XX_LAUNCH */
-#if defined (CC13XX_LAUNCHXL)
+#if defined (CC13XX_LAUNCHXL) || defined (MY_CC13XX_LAUNCHXL)
 //
 // Tx Power Table Used Depends on Device Package
 //

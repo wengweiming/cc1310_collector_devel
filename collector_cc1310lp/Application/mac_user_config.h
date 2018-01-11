@@ -83,7 +83,7 @@ extern "C"
 
 /* COPROCESSOR PROJECTS */
 #if defined( COPROCESSOR )
-#if  defined(CC13XX_LAUNCHXL)
+#if  defined(CC13XX_LAUNCHXL) || defined (MY_CC13XX_LAUNCHXL)
 /* coprocessor project should have all the configurations */
 #include <rf_patches/rf_patch_cpe_sl_longrange.h>
 #include <rf_patches/rf_patch_mce_sl_longrange.h>
@@ -135,7 +135,7 @@ extern "C"
 #error "***MAC USER CONFIG BUILD ERROR*** Unknown phy id!"
 #endif /* end of CONFIG_PHY_ID */
 /* there is no patch for CC1352 */
-#if defined(CC13XX_LAUNCHXL)
+#if defined(CC13XX_LAUNCHXL) || defined (MY_CC13XX_LAUNCHXL)
 #ifdef SL_LRM
 #include <rf_patches/rf_patch_cpe_sl_longrange.h>
 #include <rf_patches/rf_patch_mce_sl_longrange.h>
