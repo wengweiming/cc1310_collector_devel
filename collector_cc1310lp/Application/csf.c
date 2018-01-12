@@ -609,6 +609,7 @@ void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
 
 //    LCD_WRITE_STRING_VALUE("Sensor 0x", pSrcAddr->addr.shortAddr, 16, 6);
     LCD_WRITE_STRING_VALUE("BH1750_Data = ", pMsg->bh1750Sensor.light, 10, 0);
+    LCD_WRITE_STRING_VALUE("DS18B20_Data = ", pMsg->ds18b20Sensor.temp, 10, 0);
 
 #if defined(MT_CSF)
     MTCSF_sensorUpdateIndCB(pSrcAddr, rssi, pMsg);

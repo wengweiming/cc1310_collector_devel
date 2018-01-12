@@ -96,6 +96,7 @@
                               Smsgs_dataFields_lightSensor | \
                               Smsgs_dataFields_humiditySensor | \
                               Smsgs_dataFields_bh1750Sensor | \
+                              Smsgs_dataFields_ds18b20Sensor | \
                               Smsgs_dataFields_msgStats | \
                               Smsgs_dataFields_configSettings)
 
@@ -1096,6 +1097,11 @@ static void processSensorData(ApiMac_mcpsDataInd_t *pDataInd)
     if(sensorData.frameControl & Smsgs_dataFields_bh1750Sensor)
     {
         sensorData.bh1750Sensor.light = Util_buildUint16(pBuf[0], pBuf[1]);
+        pBuf += 2;
+    }
+    if (sensorData.frameControl & Smsgs_dataFields_ds18b20Sensor)
+    {
+        sensorData.ds18b20Sensor.temp = Util_buildUint16(pBuf[0], pBuf[1]);
     }
 
     Collector_statistics.sensorMessagesReceived++;

@@ -192,6 +192,8 @@ The <b>Sensor Ramp Data Message</b> is defined as:
 #define SMSGS_SENSOR_HUMIDITY_LEN 4
 /*! Length of the bh1750Sensor portion of the sensor data message */
 #define SMSGS_SENSOR_BH1750_LEN 2
+/*! Length of the ds18b20Sensor portion of the sensor data message */
+#define SMSGS_SENSOR_DS18B20_LEN 2
 /*! Length of the messageStatistics portion of the sensor data message */
 #define SMSGS_SENSOR_MSG_STATS_LEN 40
 /*! Length of the configSettings portion of the sensor data message */
@@ -249,6 +251,8 @@ typedef enum
     Smsgs_dataFields_configSettings = 0x0010,
     /*! bh1750 Sensor */
     Smsgs_dataFields_bh1750Sensor = 0x0020,
+    /*! ds18b20 Sensor */
+    Smsgs_dataFields_ds18b20Sensor = 0x0040,
 } Smsgs_dataFields_t;
 
 /*!
@@ -391,6 +395,14 @@ typedef struct _Smsgs_bh1750sensorfield_t
 } Smsgs_bh1750SensorField_t;
 
 /*!
+ DS18B20 Sensor Field
+ */
+typedef struct _Smsgs_ds18b20sensorfield_t
+{
+    uint16_t temp;
+} Smsgs_ds18b20sensorField_t;
+
+/*!
  Message Statistics Field
  */
 typedef struct _Smsgs_msgstatsfield_t
@@ -526,6 +538,8 @@ typedef struct _Smsgs_sensormsg_t
     Smsgs_configSettingsField_t configSettings;
 
     Smsgs_bh1750SensorField_t bh1750Sensor;
+
+    Smsgs_ds18b20sensorField_t ds18b20Sensor;
 } Smsgs_sensorMsg_t;
 
 /*!
