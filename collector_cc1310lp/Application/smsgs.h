@@ -196,6 +196,8 @@ The <b>Sensor Ramp Data Message</b> is defined as:
 #define SMSGS_SENSOR_DS18B20_LEN 2
 /*! Length of the dh21Sensor portion of the sensor data message */
 #define SMSGS_SENSOR_DH21_LEN 4
+/*! Length of the mhz14aSensor portion of the sensor data message */
+#define SMSGS_SENSOR_MHZ14A_LEN 2
 /*! Length of the messageStatistics portion of the sensor data message */
 #define SMSGS_SENSOR_MSG_STATS_LEN 40
 /*! Length of the configSettings portion of the sensor data message */
@@ -257,6 +259,8 @@ typedef enum
     Smsgs_dataFields_ds18b20Sensor = 0x0040,
     /*! dh21 Sensor */
     Smsgs_dataFields_dh21Sensor = 0x0080,
+    /*! mhz14a Sensor */
+    Smsgs_dataFields_mhz14aSensor = 0x0100,
 } Smsgs_dataFields_t;
 
 /*!
@@ -416,6 +420,14 @@ typedef struct _Smsgs_dh21sensorfield_t
 } Smsgs_dh21sensorField_t;
 
 /*!
+ MH-Z14A Sensor Field
+ */
+typedef struct _Smsgs_mhz14asensorfield_t
+{
+    uint16_t co2;
+} Smsgs_mhz14asensorField_t;
+
+/*!
  Message Statistics Field
  */
 typedef struct _Smsgs_msgstatsfield_t
@@ -555,6 +567,8 @@ typedef struct _Smsgs_sensormsg_t
     Smsgs_ds18b20sensorField_t ds18b20Sensor;
 
     Smsgs_dh21sensorField_t dh21Sensor;
+
+    Smsgs_mhz14asensorField_t mhz14aSensor;
 } Smsgs_sensorMsg_t;
 
 /*!

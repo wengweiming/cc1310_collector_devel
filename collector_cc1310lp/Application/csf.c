@@ -612,6 +612,7 @@ void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
     LCD_WRITE_STRING_VALUE("DS18B20_Data = ", pMsg->ds18b20Sensor.temp, 10, 0);
     LCD_WRITE_STRING_VALUE("DH21_Temp = ", pMsg->dh21Sensor.temp, 10, 0);
     LCD_WRITE_STRING_VALUE("DH21_Humi = ", pMsg->dh21Sensor.humi, 10, 0);
+    LCD_WRITE_STRING_VALUE("MHZ14A_Data = ", pMsg->mhz14aSensor.co2, 10, 0);
     LCD_WRITE_STRING("===========================================", 0);
 
 #if defined(MT_CSF)
