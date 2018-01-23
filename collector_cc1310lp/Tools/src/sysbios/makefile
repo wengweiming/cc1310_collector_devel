@@ -1,27 +1,27 @@
 
-XOPTS = -I"/home/smarterning/software/ti/xdctools_3_50_04_43_core/packages/" -Dxdc_target_types__=/home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/targets/arm/elf/std.h -Dxdc_target_name__=M3
+XOPTS = -I"C:/other_software/ti/xdctools_3_50_04_43_core/packages/" -Dxdc_target_types__=C:/ti/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/targets/arm/elf/std.h -Dxdc_target_name__=M3
 
-vpath % /home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/sysbios/
-vpath %.c /home/smarterning/software/ti/xdctools_3_50_04_43_core/packages/
+vpath % C:/ti/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/sysbios/
+vpath %.c C:/other_software/ti/xdctools_3_50_04_43_core/packages/
 
 CCOPTS    = --endian=little -mv7M3 --abi=eabi -q -ms --opt_for_speed=0  --program_level_compile -o3 -g --optimize_with_debug  -Dti_sysbios_family_arm_cc26xx_Boot_driverlibVersion=2 -Dti_sysbios_knl_Task_minimizeLatency__D=FALSE -Dti_sysbios_knl_Clock_stopCheckNext__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_enableException__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_disablePriority__D=32U -Dti_sysbios_family_arm_m3_Hwi_numSparseInterrupts__D=0U
 
-XDC_ROOT  = /home/smarterning/software/ti/xdctools_3_50_04_43_core/packages/
+XDC_ROOT  = C:/other_software/ti/xdctools_3_50_04_43_core/packages/
 
-BIOS_ROOT = /home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/sysbios/
+BIOS_ROOT = C:/ti/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/sysbios/
 
-BIOS_DEFS =  -Dti_sysbios_BIOS_swiEnabled__D=TRUE -Dti_sysbios_BIOS_taskEnabled__D=TRUE -Dti_sysbios_BIOS_clockEnabled__D=TRUE -Dti_sysbios_BIOS_runtimeCreatesEnabled__D=TRUE -Dti_sysbios_knl_Task_moduleStateCheckFlag__D=FALSE -Dti_sysbios_knl_Task_objectCheckFlag__D=FALSE -Dti_sysbios_hal_Hwi_DISABLE_ALL_HOOKS -Dti_sysbios_knl_Swi_DISABLE_ALL_HOOKS -Dti_sysbios_BIOS_smpEnabled__D=FALSE -Dti_sysbios_Build_useHwiMacros -Dti_sysbios_Build_useIndirectReferences=FALSE -Dti_sysbios_knl_Swi_numPriorities__D=6 -Dti_sysbios_knl_Task_deleteTerminatedTasks__D=FALSE -Dti_sysbios_knl_Task_numPriorities__D=6 -Dti_sysbios_knl_Task_checkStackFlag__D=FALSE -Dti_sysbios_knl_Task_initStackFlag__D=TRUE -Dti_sysbios_knl_Task_DISABLE_ALL_HOOKS -Dti_sysbios_knl_Clock_TICK_SOURCE=ti_sysbios_knl_Clock_TickSource_TIMER -Dti_sysbios_knl_Clock_TICK_MODE=ti_sysbios_knl_Clock_TickMode_DYNAMIC -Dti_sysbios_hal_Core_delegate_getId=ti_sysbios_hal_CoreNull_getId__E -Dti_sysbios_hal_Core_delegate_interruptCore=ti_sysbios_hal_CoreNull_interruptCore__E -Dti_sysbios_hal_Core_delegate_lock=ti_sysbios_hal_CoreNull_lock__E -Dti_sysbios_hal_Core_delegate_unlock=ti_sysbios_hal_CoreNull_unlock__E -Dti_sysbios_hal_Core_numCores__D=1 -Dti_sysbios_hal_CoreNull_numCores__D=1 -Dti_sysbios_utils_Load_taskEnabled__D=TRUE -Dti_sysbios_utils_Load_swiEnabled__D=FALSE -Dti_sysbios_utils_Load_hwiEnabled__D=FALSE -Dti_sysbios_family_arm_m3_Hwi_dispatcherSwiSupport__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_dispatcherTaskSupport__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_dispatcherAutoNestingSupport__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_dispatcherIrpTrackingSupport__D=TRUE -Dti_sysbios_knl_Semaphore_supportsEvents__D=FALSE -Dti_sysbios_knl_Semaphore_supportsPriority__D=FALSE -Dxdc_runtime_Assert_DISABLE_ALL -Dxdc_runtime_Log_DISABLE_ALL --define=AUTO_START --define=NV_RESTORE --define=RF_MULTI_MODE --define=xPOWER_MEAS --define=MAC_PNM_MAX_NUMBER_OF_NODE=50 --define=MAX_DEVICE_TABLE_ENTRIES=50 --define=BOARD_DISPLAY_USE_UART --define=xBOARD_DISPLAY_USE_LCD --define=ONE_PAGE_NV --define=ONE_PAGE_NV_FULL_HDR --define=DEVICE_FAMILY=cc13x0 --define=DeviceFamily_CC13X0 --define=CC13XX_LAUNCHXL --define=TI154STACK --define=CCFG_FORCE_VDDR_HH=0 --define=SET_CCFG_BL_CONFIG_BL_LEVEL=0x00 --define=SET_CCFG_BL_CONFIG_BL_ENABLE=0xC5 --define=SET_CCFG_BL_CONFIG_BL_PIN_NUMBER=0x0D --define=SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE=0xC5 --define=HEAPMGR_SIZE=0 --define=USE_ICALL --define=STACK_LIBRARY --define=ICALL_LITE --define=RCN_APP_ASSERT --define=HAL_ASSERT_SPIN --define=ICALL_HOOK_ABORT_FUNC=halAssertHandler --define=xdc_runtime_Log_DISABLE_ALL --define=xdc_runtime_Assert_DISABLE_ALL --define=xPREAMBLE_COMPATIBILITY --define=FEATURE_ENHANCED_ACK --define=FEATURE_SYSTEM_STATS --define=xSTATIC_MAC_SECURITY_DEFAULTS 
+BIOS_DEFS =  -Dti_sysbios_BIOS_swiEnabled__D=TRUE -Dti_sysbios_BIOS_taskEnabled__D=TRUE -Dti_sysbios_BIOS_clockEnabled__D=TRUE -Dti_sysbios_BIOS_runtimeCreatesEnabled__D=TRUE -Dti_sysbios_knl_Task_moduleStateCheckFlag__D=FALSE -Dti_sysbios_knl_Task_objectCheckFlag__D=FALSE -Dti_sysbios_hal_Hwi_DISABLE_ALL_HOOKS -Dti_sysbios_knl_Swi_DISABLE_ALL_HOOKS -Dti_sysbios_BIOS_smpEnabled__D=FALSE -Dti_sysbios_Build_useHwiMacros -Dti_sysbios_Build_useIndirectReferences=FALSE -Dti_sysbios_knl_Swi_numPriorities__D=6 -Dti_sysbios_knl_Task_deleteTerminatedTasks__D=FALSE -Dti_sysbios_knl_Task_numPriorities__D=6 -Dti_sysbios_knl_Task_checkStackFlag__D=FALSE -Dti_sysbios_knl_Task_initStackFlag__D=TRUE -Dti_sysbios_knl_Task_DISABLE_ALL_HOOKS -Dti_sysbios_knl_Clock_TICK_SOURCE=ti_sysbios_knl_Clock_TickSource_TIMER -Dti_sysbios_knl_Clock_TICK_MODE=ti_sysbios_knl_Clock_TickMode_DYNAMIC -Dti_sysbios_hal_Core_delegate_getId=ti_sysbios_hal_CoreNull_getId__E -Dti_sysbios_hal_Core_delegate_interruptCore=ti_sysbios_hal_CoreNull_interruptCore__E -Dti_sysbios_hal_Core_delegate_lock=ti_sysbios_hal_CoreNull_lock__E -Dti_sysbios_hal_Core_delegate_unlock=ti_sysbios_hal_CoreNull_unlock__E -Dti_sysbios_hal_Core_numCores__D=1 -Dti_sysbios_hal_CoreNull_numCores__D=1 -Dti_sysbios_utils_Load_taskEnabled__D=TRUE -Dti_sysbios_utils_Load_swiEnabled__D=FALSE -Dti_sysbios_utils_Load_hwiEnabled__D=FALSE -Dti_sysbios_family_arm_m3_Hwi_dispatcherSwiSupport__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_dispatcherTaskSupport__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_dispatcherAutoNestingSupport__D=TRUE -Dti_sysbios_family_arm_m3_Hwi_dispatcherIrpTrackingSupport__D=TRUE -Dti_sysbios_knl_Semaphore_supportsEvents__D=FALSE -Dti_sysbios_knl_Semaphore_supportsPriority__D=FALSE -Dxdc_runtime_Assert_DISABLE_ALL -Dxdc_runtime_Log_DISABLE_ALL --define=AUTO_START --define=NV_RESTORE --define=RF_MULTI_MODE --define=xPOWER_MEAS --define=MAC_PNM_MAX_NUMBER_OF_NODE=50 --define=MAX_DEVICE_TABLE_ENTRIES=50 --define=BOARD_DISPLAY_USE_UART --define=xBOARD_DISPLAY_USE_LCD --define=ONE_PAGE_NV --define=ONE_PAGE_NV_FULL_HDR --define=DEVICE_FAMILY=cc13x0 --define=DeviceFamily_CC13X0 --define=MY_CC13XX_LAUNCHXL --define=xCC13XX_LAUNCHXL --define=TI154STACK --define=CCFG_FORCE_VDDR_HH=0 --define=SET_CCFG_BL_CONFIG_BL_LEVEL=0x00 --define=SET_CCFG_BL_CONFIG_BL_ENABLE=0xC5 --define=SET_CCFG_BL_CONFIG_BL_PIN_NUMBER=0x0D --define=SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE=0xC5 --define=HEAPMGR_SIZE=0 --define=USE_ICALL --define=STACK_LIBRARY --define=ICALL_LITE --define=RCN_APP_ASSERT --define=HAL_ASSERT_SPIN --define=ICALL_HOOK_ABORT_FUNC=halAssertHandler --define=xdc_runtime_Log_DISABLE_ALL --define=xdc_runtime_Assert_DISABLE_ALL --define=xPREAMBLE_COMPATIBILITY --define=FEATURE_ENHANCED_ACK --define=FEATURE_SYSTEM_STATS --define=xSTATIC_MAC_SECURITY_DEFAULTS 
 
-BIOS_INC  = -I"/home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/"
+BIOS_INC  = -I"C:/ti/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/"
 
-INCS =  $(BIOS_INC) -I"/home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/source/" -I"/home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/" -I"/home/smarterning/software/ti/xdctools_3_50_04_43_core/packages/" -I"/home/smarterning/software/ti/ccsv7/ccs_base/" -I"/home/smarterning/software/ti/xdctools_3_50_04_43_core/packages/" -I"../" -I"/packages//" 
+INCS =  $(BIOS_INC) -I"C:/ti/simplelink_cc13x0_sdk_1_50_00_08/source/" -I"C:/ti/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/" -I"C:/other_software/ti/xdctools_3_50_04_43_core/packages/" -I"C:/other_software/ti/ccsv7/ccs_base/" -I"C:/other_software/ti/xdctools_3_50_04_43_core/packages/" -I"../" -I"/packages//" 
 
-CC = /home/smarterning/software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl -c $(CCOPTS) -I /home/smarterning/software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include
-ASM = /home/smarterning/software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl -c $(CCOPTS) -I /home/smarterning/software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include
-AR = /home/smarterning/software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armar rq
+CC = C:/other_software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl -c $(CCOPTS) -I C:/other_software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include
+ASM = C:/other_software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armcl -c $(CCOPTS) -I C:/other_software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/include
+AR = C:/other_software/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.6.LTS/bin/armar rq
 
-DEL = rm -f
-CP = cp -f
+DEL = C:/other_software/ti/xdctools_3_50_04_43_core/packages/../bin/rm -f
+CP = C:/other_software/ti/xdctools_3_50_04_43_core/packages/../bin/cp -f
 
 define RM
 	$(if $(wildcard $1),$(DEL) $1,:)
@@ -98,8 +98,8 @@ rom_sysbios.obj: BIOS.c knl/Clock.c knl/Idle.c knl/Intrinsics.c knl/Event.c knl/
 rom_sysbios.aem3: rom_sysbios.obj m3_Hwi_asm.obj m3_Hwi_asm_switch.obj m3_IntrinsicsSupport_asm.obj m3_TaskSupport_asm.obj
 	@-$(call RM, $@)
 	@echo arem3 $^ ...
-	@$(AR) $@ $^ /home/smarterning/Documents/working/cc1310/cc1310_devel/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc13xx/golden/CC13xx/rom_sysbios_config.obj
+	@$(AR) $@ $^ C:/ti/simplelink_cc13x0_sdk_1_50_00_08/kernel/tirtos/packages/ti/sysbios/rom/cortexm/cc13xx/golden/CC13xx/rom_sysbios_config.obj
 
 clean:
-	@$(DEL) ../makefile.libs
+	@$(DEL) ..\makefile.libs
 	@-$(call RM, *)
