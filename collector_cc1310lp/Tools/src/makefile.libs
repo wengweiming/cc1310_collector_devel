@@ -1,6 +1,6 @@
 #
 # This file was generated based on the configuration script:
-#     D:\working\cc1310\cc1310_devel\cc1310_collector_devel\collector_cc1310lp\Tools\app.cfg
+#     C:\cc1310_collector_devel\cc1310_collector_devel\collector_cc1310lp\Tools\app.cfg
 #
 # This makefile may be included in other makefiles that need to build
 # the libraries containing the compiled source files generated as
@@ -14,7 +14,7 @@
 #
 # The absolute path to the generated source directory (at the time the
 # sources were generated) is:
-#    D:\working\cc1310\cc1310_devel\cc1310_collector_devel\collector_cc1310lp\Tools\src
+#    C:\cc1310_collector_devel\cc1310_collector_devel\collector_cc1310lp\Tools\src
 #
 GEN_SRC_DIR ?= ../Tools/src
 

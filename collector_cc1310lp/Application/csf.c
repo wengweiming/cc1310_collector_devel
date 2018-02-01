@@ -194,7 +194,7 @@ STATIC Clock_Struct configClkStruct;
 STATIC Clock_Handle configClkHandle;
 
 /* NV Function Pointers */
-static NVINTF_nvFuncts_t *pNV = NULL;
+NVINTF_nvFuncts_t *pNV = NULL;
 
 /* Permit join setting */
 static bool permitJoining = false;
@@ -220,7 +220,8 @@ uint16_t Csf_events = 0;
 
 /* Saved CLLC state */
 Cllc_states_t savedCllcState = Cllc_states_initWaiting;
-
+extern Llc_deviceListItem_t dev_0;
+extern NVINTF_itemID_t id_0;
 /******************************************************************************
  Local function prototypes
  *****************************************************************************/
@@ -532,10 +533,13 @@ ApiMac_assocStatus_t Csf_deviceUpdate(ApiMac_deviceDescriptor_t *pDevInfo,
         Llc_deviceListItem_t dev;
 
         memcpy(&dev.devInfo, pDevInfo, sizeof(ApiMac_deviceDescriptor_t));
+        memcpy(&dev_0.devInfo, pDevInfo, sizeof(ApiMac_deviceDescriptor_t));
         memcpy(&dev.capInfo, pCapInfo, sizeof(ApiMac_capabilityInfo_t));
+        memcpy(&dev_0.capInfo, pCapInfo, sizeof(ApiMac_capabilityInfo_t));
         dev.rxFrameCounter = 0;
+        dev_0.rxFrameCounter = 0;
 
-        if(addDeviceListItem(&dev) == false)
+        if(addDeviceListItem(&dev) == false)    //将设备信息添加到NV区
         {
 #ifdef NV_RESTORE
             status = ApiMac_assocStatus_panAtCapacity;
@@ -609,7 +613,7 @@ void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
 
 //    LCD_WRITE_STRING_VALUE("Sensor 0x", pSrcAddr->addr.shortAddr, 16, 6);
     LCD_WRITE_STRING_VALUE("BH1750_Data = ", pMsg->bh1750Sensor.light, 10, 0);
-    LCD_WRITE_STRING_VALUE("DS18B20_Data = ", pMsg->ds18b20Sensor.temp, 10, 0);
+//    LCD_WRITE_STRING_VALUE("DS18B20_Data = ", pMsg->ds18b20Sensor.temp, 10, 0);
     LCD_WRITE_STRING_VALUE("DH21_Temp = ", pMsg->dh21Sensor.temp, 10, 0);
     LCD_WRITE_STRING_VALUE("DH21_Humi = ", pMsg->dh21Sensor.humi, 10, 0);
     LCD_WRITE_STRING_VALUE("MHZ14A_Data = ", pMsg->mhz14aSensor.co2, 10, 0);
@@ -1528,9 +1532,9 @@ static bool addDeviceListItem(Llc_deviceListItem_t *pItem)
                 id.systemID = NVINTF_SYSID_APP;
                 id.itemID = CSF_NV_DEVICELIST_ID;
                 id.subID = (uint16_t)findUnusedDeviceListIndex();
-
+                memcpy(&id_0,&id, sizeof(NVINTF_itemID_t));
                 /* write the device list record */
-                stat = pNV->writeItem(id, sizeof(Llc_deviceListItem_t), pItem);
+                stat = pNV->writeItem(id, sizeof(Llc_deviceListItem_t), pItem);//写入NV区域
                 if(stat == NVINTF_SUCCESS)
                 {
                     /* Update the number of entries */

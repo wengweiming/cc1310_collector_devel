@@ -232,7 +232,9 @@ The <b>Sensor Ramp Data Message</b> is defined as:
     /*! OAD mesages, sent/received from both collector and sensor */
     Smsgs_cmdIds_oad = 9,
     /* Broadcast control msg, sent from the collector to the sensor */
-    Smgs_cmdIds_broadcastCtrlMsg = 10
+    Smgs_cmdIds_broadcastCtrlMsg = 10,
+
+    Smgs_cmdIds_devicetype=11
  } Smsgs_cmdIds_t;
 
 /*!
@@ -243,24 +245,38 @@ The <b>Sensor Ramp Data Message</b> is defined as:
  */
 typedef enum
 {
-    /*! Temperature Sensor */
-    Smsgs_dataFields_tempSensor = 0x0001,
-    /*! Light Sensor */
-    Smsgs_dataFields_lightSensor = 0x0002,
-    /*! Humidity Sensor */
-    Smsgs_dataFields_humiditySensor = 0x0004,
-    /*! Message Statistics */
-    Smsgs_dataFields_msgStats = 0x0008,
-    /*! Config Settings */
-    Smsgs_dataFields_configSettings = 0x0010,
-    /*! bh1750 Sensor */
-    Smsgs_dataFields_bh1750Sensor = 0x0020,
     /*! ds18b20 Sensor */
-    Smsgs_dataFields_ds18b20Sensor = 0x0040,
+    Smsgs_dataFields_ds18b20Sensor  = 0x0001,
+
     /*! dh21 Sensor */
-    Smsgs_dataFields_dh21Sensor = 0x0080,
+    Smsgs_dataFields_dh21Sensor     = 0x0002,
+
+    /*! bh1750 Sensor */
+    Smsgs_dataFields_bh1750Sensor   = 0x0004,
+
     /*! mhz14a Sensor */
-    Smsgs_dataFields_mhz14aSensor = 0x0100,
+    Smsgs_dataFields_mhz14aSensor   = 0x0008,
+
+    /*! PH Sensor */
+    Smsgs_dataFields_PHSensor       = 0x0010,
+
+    /*! EC Sensor */
+    Smsgs_dataFields_ECSensor       = 0x0020,
+
+    /*! Humidity Sensor */
+    Smsgs_dataFields_humiditySensor = 0x0100,
+
+    /*! Temperature Sensor */
+    Smsgs_dataFields_tempSensor     = 0x1000,
+
+    /*! Light Sensor */
+    Smsgs_dataFields_lightSensor    = 0x2000,
+
+    /*! Message Statistics */
+    Smsgs_dataFields_msgStats       = 0x4000,
+
+    /*! Config Settings */
+    Smsgs_dataFields_configSettings = 0x8000,
 } Smsgs_dataFields_t;
 
 /*!

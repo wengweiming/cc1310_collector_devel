@@ -56,6 +56,7 @@
 #include "llc.h"
 #include "cllc.h"
 #include "smsgs.h"
+#include "nvintf.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -74,7 +75,7 @@ extern "C"
 /******************************************************************************
  Typedefs
  *****************************************************************************/
-
+//extern  static NVINTF_nvFuncts_t *pNV;
 
 /******************************************************************************
  Function Prototypes

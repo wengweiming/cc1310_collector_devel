@@ -56,6 +56,8 @@
 #include "csf.h"
 #include "smsgs.h"
 #include "collector.h"
+#include "board_lcd.h"
+#include "nvintf.h"
 
 /******************************************************************************
  Constants and definitions
@@ -161,6 +163,9 @@ uint16_t Collector_events = 0;
 
 /*! Collector statistics */
 Collector_statistics_t Collector_statistics;
+Llc_deviceListItem_t dev_0;
+NVINTF_itemID_t id_0;
+extern  NVINTF_nvFuncts_t *pNV;
 
 /******************************************************************************
  Local variables
@@ -170,7 +175,7 @@ static void *sem;
 
 /*! true if the device was restarted */
 static bool restarted = false;
-
+static uint16_t devicetype;
 /*! CLLC State */
 STATIC Cllc_states_t cllcState = Cllc_states_initWaiting;
 
@@ -198,6 +203,7 @@ static void processConfigResponse(ApiMac_mcpsDataInd_t *pDataInd);
 static void processTrackingResponse(ApiMac_mcpsDataInd_t *pDataInd);
 static void processToggleLedResponse(ApiMac_mcpsDataInd_t *pDataInd);
 static void processSensorData(ApiMac_mcpsDataInd_t *pDataInd);
+static void Collector_deviceconfig(ApiMac_mcpsDataInd_t *pDataInd);
 static Cllc_associated_devices_t *findDevice(ApiMac_sAddr_t *pAddr);
 static Cllc_associated_devices_t *findDeviceStatusBit(uint16_t mask, uint16_t statusBit);
 static uint8_t getMsduHandle(Smsgs_cmdIds_t msgType);
@@ -568,7 +574,7 @@ static ApiMac_assocStatus_t cllcDeviceJoiningCB(
     if(pDevInfo->panID == devicePanId)
     {
         /* Update the user that a device is joining */
-        status = Csf_deviceUpdate(pDevInfo, pCapInfo);
+        status = Csf_deviceUpdate(pDevInfo, pCapInfo);  //这里将设备类型加入NV区
         if(status==ApiMac_assocStatus_success)
         {
 #ifdef FEATURE_MAC_SECURITY
@@ -733,6 +739,7 @@ static void dataCnfCB(ApiMac_mcpsDataCnf_t *pDataCnf)
  */
 static void dataIndCB(ApiMac_mcpsDataInd_t *pDataInd)
 {
+
     if((pDataInd != NULL) && (pDataInd->msdu.p != NULL)
        && (pDataInd->msdu.len > 0))
     {
@@ -783,7 +790,9 @@ static void dataIndCB(ApiMac_mcpsDataInd_t *pDataInd)
             case Smsgs_cmdIds_rampdata:
                 Collector_statistics.sensorMessagesReceived++;
                 break;
-
+            case Smgs_cmdIds_devicetype:
+                   Collector_deviceconfig(pDataInd);
+                break;
             default:
                 /* Should not receive other messages */
                 break;
@@ -1127,7 +1136,72 @@ static void processSensorData(ApiMac_mcpsDataInd_t *pDataInd)
 
     processDataRetry(&(pDataInd->srcAddr));
 }
+static void Collector_deviceconfig(ApiMac_mcpsDataInd_t *pDataInd)
+{
+       int x;
+//       Llc_deviceListItem_t item;
+       uint16_t device_REPORTING_INTERVAL,device_POLLING_INTERVAL;
+       uint8_t *pBuf = pDataInd->msdu.p;
+       pBuf++;
+       devicetype=Util_buildUint16(pBuf[0], pBuf[1]);
+       dev_0.devInfo.devicetype=devicetype;
+       pNV->writeItem(id_0, sizeof(Llc_deviceListItem_t), &dev_0);
+//       pNV->readItem(id_0, 0, sizeof(Llc_deviceListItem_t), &item);
+//       LCD_WRITE_STRING_VALUE("device_type= ", item.devInfo.devicetype, 10, 0);
+//       LCD_WRITE_STRING_VALUE("device_extAddress= ", item.devInfo.extAddress[0], 16, 0);
+       switch(devicetype)
+       {
+       case 0x0ff0:device_REPORTING_INTERVAL=15000;device_POLLING_INTERVAL=2000;break;
 
+       case 0x1010:device_REPORTING_INTERVAL=2000;device_POLLING_INTERVAL=2000;break;
+
+       default:device_REPORTING_INTERVAL=30000;device_POLLING_INTERVAL=30000;break;
+       }
+       if(findDeviceStatusBit(ASSOC_CONFIG_MASK, ASSOC_CONFIG_SENT) == NULL)
+              {
+                  /* Run through all of the devices */
+                 for(x = 0; x < CONFIG_MAX_DEVICES; x++)
+                {
+               /* Make sure the entry is valid. */
+                   if((Cllc_associatedDevList[x].shortAddr != CSF_INVALID_SHORT_ADDR)
+                     && (Cllc_associatedDevList[x].status & CLLC_ASSOC_STATUS_ALIVE))
+                   {
+                   uint16_t status = Cllc_associatedDevList[x].status;
+
+                   /*
+                    Has the device been sent or already received a config request?
+                    */
+                      if(((status & (ASSOC_CONFIG_SENT | ASSOC_CONFIG_RSP)) == 0))
+                      {
+                       ApiMac_sAddr_t dstAddr;
+                       Collector_status_t stat;
+
+                       /* Set up the destination address */
+                       dstAddr.addrMode = ApiMac_addrType_short;
+                       dstAddr.addr.shortAddr =
+                           Cllc_associatedDevList[x].shortAddr;
+
+                       /* Send the Config Request */
+                       stat = Collector_sendConfigRequest(
+                                       &dstAddr, (CONFIG_FRAME_CONTROL),
+                                       (device_REPORTING_INTERVAL),
+                                       (device_POLLING_INTERVAL));
+                         if(stat == Collector_status_success)
+                         {
+                           /*
+                            Mark as the message has been sent and expecting a response
+                            */
+                           Cllc_associatedDevList[x].status |= ASSOC_CONFIG_SENT;
+                           Cllc_associatedDevList[x].status &= ~ASSOC_CONFIG_RSP;
+                         }
+
+                       /* Only do one at a time */
+                       break;
+                      }
+                  }
+                }
+             }
+}
 /*!
  * @brief      Find the associated device table entry matching pAddr.
  *
@@ -1428,50 +1502,50 @@ static void generateConfigRequests(void)
     }
 
     /* Make sure we are only sending one config request at a time */
-    if(findDeviceStatusBit(ASSOC_CONFIG_MASK, ASSOC_CONFIG_SENT) == NULL)
-    {
-        /* Run through all of the devices */
-        for(x = 0; x < CONFIG_MAX_DEVICES; x++)
-        {
-            /* Make sure the entry is valid. */
-            if((Cllc_associatedDevList[x].shortAddr != CSF_INVALID_SHORT_ADDR)
-               && (Cllc_associatedDevList[x].status & CLLC_ASSOC_STATUS_ALIVE))
-            {
-                uint16_t status = Cllc_associatedDevList[x].status;
-
-                /*
-                 Has the device been sent or already received a config request?
-                 */
-                if(((status & (ASSOC_CONFIG_SENT | ASSOC_CONFIG_RSP)) == 0))
-                {
-                    ApiMac_sAddr_t dstAddr;
-                    Collector_status_t stat;
-
-                    /* Set up the destination address */
-                    dstAddr.addrMode = ApiMac_addrType_short;
-                    dstAddr.addr.shortAddr =
-                        Cllc_associatedDevList[x].shortAddr;
-
-                    /* Send the Config Request */
-                    stat = Collector_sendConfigRequest(
-                                    &dstAddr, (CONFIG_FRAME_CONTROL),
-                                    (CONFIG_REPORTING_INTERVAL),
-                                    (CONFIG_POLLING_INTERVAL));
-                    if(stat == Collector_status_success)
-                    {
-                        /*
-                         Mark as the message has been sent and expecting a response
-                         */
-                        Cllc_associatedDevList[x].status |= ASSOC_CONFIG_SENT;
-                        Cllc_associatedDevList[x].status &= ~ASSOC_CONFIG_RSP;
-                    }
-
-                    /* Only do one at a time */
-                    break;
-                }
-            }
-        }
-    }
+//    if(findDeviceStatusBit(ASSOC_CONFIG_MASK, ASSOC_CONFIG_SENT) == NULL)
+//    {
+//        /* Run through all of the devices */
+//        for(x = 0; x < CONFIG_MAX_DEVICES; x++)
+//        {
+//            /* Make sure the entry is valid. */
+//            if((Cllc_associatedDevList[x].shortAddr != CSF_INVALID_SHORT_ADDR)
+//               && (Cllc_associatedDevList[x].status & CLLC_ASSOC_STATUS_ALIVE))
+//            {
+//                uint16_t status = Cllc_associatedDevList[x].status;
+//
+//                /*
+//                 Has the device been sent or already received a config request?
+//                 */
+//                if(((status & (ASSOC_CONFIG_SENT | ASSOC_CONFIG_RSP)) == 0))
+//                {
+//                    ApiMac_sAddr_t dstAddr;
+//                    Collector_status_t stat;
+//
+//                    /* Set up the destination address */
+//                    dstAddr.addrMode = ApiMac_addrType_short;
+//                    dstAddr.addr.shortAddr =
+//                        Cllc_associatedDevList[x].shortAddr;
+//
+//                    /* Send the Config Request */
+//                    stat = Collector_sendConfigRequest(
+//                                    &dstAddr, (CONFIG_FRAME_CONTROL),
+//                                    (CONFIG_REPORTING_INTERVAL),
+//                                    (CONFIG_POLLING_INTERVAL));
+//                    if(stat == Collector_status_success)
+//                    {
+//                        /*
+//                         Mark as the message has been sent and expecting a response
+//                         */
+//                        Cllc_associatedDevList[x].status |= ASSOC_CONFIG_SENT;
+//                        Cllc_associatedDevList[x].status &= ~ASSOC_CONFIG_RSP;
+//                    }
+//
+//                    /* Only do one at a time */
+//                    break;
+//                }
+//            }
+//        }
+//    }
 #endif
 }
 
