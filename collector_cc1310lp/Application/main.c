@@ -363,7 +363,7 @@ Void main()
     Task_Params_init(&taskParams);
     taskParams.stack = myTaskStack;
     taskParams.stackSize = APP_TASK_STACK_SIZE;
-    taskParams.priority = 1;
+    taskParams.priority = 2;
     Task_construct(&myTask, taskFxn, &taskParams, NULL);
 
 #ifdef DEBUG_SW_TRACE
