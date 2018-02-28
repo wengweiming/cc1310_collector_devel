@@ -609,14 +609,33 @@ void Csf_deviceConfigUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
 void Csf_deviceSensorDataUpdate(ApiMac_sAddr_t *pSrcAddr, int8_t rssi,
                                 Smsgs_sensorMsg_t *pMsg)
 {
-    Board_Led_toggle(board_led_type_LED2);
+    Llc_deviceListItem_t pItem;
 
-//    LCD_WRITE_STRING_VALUE("Sensor 0x", pSrcAddr->addr.shortAddr, 16, 6);
-    LCD_WRITE_STRING_VALUE("BH1750_Data = ", pMsg->bh1750Sensor.light, 10, 0);
+    if(Csf_getDevice(pSrcAddr,&pItem))
+    {
+        LCD_WRITE_STRING_VALUE("Sensor 0x", pItem.devInfo.devicetype, 16, 6);
+
+    }
+    else
+    {
+        LCD_WRITE_STRING("fail",6);
+    }
+    Board_Led_toggle(board_led_type_LED2);
+    switch(pItem.devInfo.devicetype)
+    {
+      case 0x1100:    LCD_WRITE_STRING_VALUE("DH21_Temp = ", pMsg->dh21Sensor.temp, 10, 0);
+                      LCD_WRITE_STRING_VALUE("DH21_Humi = ", pMsg->dh21Sensor.humi, 10, 0);
+                      break;
+      case 0x1102:    LCD_WRITE_STRING_VALUE("BH1750_Data = ", pMsg->bh1750Sensor.light, 10, 0);
+                      break;
+    }
+
+//    LCD_WRITE_STRING_VALUE("Sensor 0x", (uint16_t)pSrcAddr->addr.shortAddr, 16, 6);
+//    LCD_WRITE_STRING_VALUE("BH1750_Data = ", pMsg->bh1750Sensor.light, 10, 0);
 //    LCD_WRITE_STRING_VALUE("DS18B20_Data = ", pMsg->ds18b20Sensor.temp, 10, 0);
-    LCD_WRITE_STRING_VALUE("DH21_Temp = ", pMsg->dh21Sensor.temp, 10, 0);
-    LCD_WRITE_STRING_VALUE("DH21_Humi = ", pMsg->dh21Sensor.humi, 10, 0);
-    LCD_WRITE_STRING_VALUE("MHZ14A_Data = ", pMsg->mhz14aSensor.co2, 10, 0);
+//    LCD_WRITE_STRING_VALUE("DH21_Temp = ", pMsg->dh21Sensor.temp, 10, 0);
+//    LCD_WRITE_STRING_VALUE("DH21_Humi = ", pMsg->dh21Sensor.humi, 10, 0);
+//    LCD_WRITE_STRING_VALUE("MHZ14A_Data = ", pMsg->mhz14aSensor.co2, 10, 0);
     LCD_WRITE_STRING("===========================================", 0);
 
 #if defined(MT_CSF)

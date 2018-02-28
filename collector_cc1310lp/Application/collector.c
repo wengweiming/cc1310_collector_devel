@@ -94,7 +94,7 @@
 #define APP_BROADCAST_MSDU_HANDLE 0x20
 
 /* Default configuration frame control */
-#define CONFIG_FRAME_CONTROL (Smsgs_dataFields_tempSensor | \
+uint16_t CONFIG_FRAME_CONTROL =(Smsgs_dataFields_tempSensor | \
                               Smsgs_dataFields_lightSensor | \
                               Smsgs_dataFields_humiditySensor | \
                               Smsgs_dataFields_bh1750Sensor | \
@@ -102,7 +102,7 @@
                               Smsgs_dataFields_dh21Sensor | \
                               Smsgs_dataFields_mhz14aSensor | \
                               Smsgs_dataFields_msgStats | \
-                              Smsgs_dataFields_configSettings)
+                              Smsgs_dataFields_configSettings);
 
 /* Delay for config request retry in busy network */
 #define CONFIG_DELAY 2000
@@ -1151,11 +1151,12 @@ static void Collector_deviceconfig(ApiMac_mcpsDataInd_t *pDataInd)
 //       LCD_WRITE_STRING_VALUE("device_extAddress= ", item.devInfo.extAddress[0], 16, 0);
        switch(devicetype)
        {
-       case 0x0ff0:device_REPORTING_INTERVAL=15000;device_POLLING_INTERVAL=2000;break;
+       case 0x1100:device_REPORTING_INTERVAL=3000;device_POLLING_INTERVAL=2000;
+                    CONFIG_FRAME_CONTROL=Smsgs_dataFields_dh21Sensor | Smsgs_dataFields_msgStats | Smsgs_dataFields_configSettings;break;
+       case 0x1102:device_REPORTING_INTERVAL=2000;device_POLLING_INTERVAL=2000;
+                    CONFIG_FRAME_CONTROL=Smsgs_dataFields_bh1750Sensor | Smsgs_dataFields_msgStats | Smsgs_dataFields_configSettings;break;
 
-       case 0x1010:device_REPORTING_INTERVAL=2000;device_POLLING_INTERVAL=2000;break;
-
-       default:device_REPORTING_INTERVAL=30000;device_POLLING_INTERVAL=30000;break;
+       default:device_REPORTING_INTERVAL=3000;device_POLLING_INTERVAL=3000;break;
        }
        if(findDeviceStatusBit(ASSOC_CONFIG_MASK, ASSOC_CONFIG_SENT) == NULL)
               {
